@@ -10,14 +10,15 @@ gem 'rails', '~> 5.0.7'
 gem 'pg'
 gem 'puma', '~> 3.0'
 gem 'devise'
+gem 'factory_bot_rails'
+gem 'faker', :git => 'https://github.com/stympy/faker.git', :branch => 'master'
+gem 'scout_apm'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
   gem 'rspec-rails', '~> 3.7'
-  gem 'factory_bot_rails'
   gem 'database_cleaner'
-  gem 'faker', :git => 'https://github.com/stympy/faker.git', :branch => 'master'
 end
 
 group :development do
