@@ -48,6 +48,4 @@ test:
 #
 production:
   <<: *default
-  database: calories_api_production
-  username: cookbook
-  password: <%= ENV['DB_PASSWORD'] %>
+  url: <%= ENV['DATABASE_URL'] %>
