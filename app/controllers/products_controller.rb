@@ -1,4 +1,6 @@
 class ProductsController < ApplicationController
+  #authenticate_user!
+
   def index
     products = Product.all
 
