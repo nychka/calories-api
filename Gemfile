@@ -14,7 +14,7 @@ gem 'factory_bot_rails'
 gem 'faker', :git => 'https://github.com/stympy/faker.git', :branch => 'master'
 gem 'scout_apm'
 gem 'simple_token_authentication', '~> 1.0'
-gem 'bcrypt', '~> 3.1.7'
+gem 'active_model_serializers'
 
 group :development, :test do
   gem 'byebug', platform: :mri

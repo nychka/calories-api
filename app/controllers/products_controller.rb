@@ -4,6 +4,6 @@ class ProductsController < ApplicationController
   def index
     products = Product.all
 
-    render json: products, status: 200
+    render json: products, each_serializer: ProductSerializer, status: 200
   end
 end
