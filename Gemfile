@@ -15,6 +15,7 @@ gem 'faker', :git => 'https://github.com/stympy/faker.git', :branch => 'master'
 gem 'scout_apm'
 gem 'simple_token_authentication', '~> 1.0'
 gem 'active_model_serializers'
+gem 'rack-cors'
 
 group :development, :test do
   gem 'byebug', platform: :mri
