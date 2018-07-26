@@ -16,6 +16,7 @@ gem 'scout_apm'
 gem 'simple_token_authentication', '~> 1.0'
 gem 'active_model_serializers'
 gem 'rack-cors'
+gem 'kaminari'
 
 group :development, :test do
   gem 'byebug', platform: :mri
