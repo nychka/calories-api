@@ -18,10 +18,12 @@ gem 'active_model_serializers'
 gem 'rack-cors'
 gem 'kaminari'
 
+
 group :development, :test do
   gem 'byebug', platform: :mri
   gem 'rspec-rails', '~> 3.7'
   gem 'database_cleaner'
+  gem 'dotenv-rails'
 end
 
 group :development do
