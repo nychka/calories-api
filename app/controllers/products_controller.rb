@@ -1,5 +1,4 @@
 class ProductsController < ApplicationController
-  #before_action :authenticate_user!
 
   def index
     products = Product.filter(filter_params)
@@ -13,6 +12,13 @@ class ProductsController < ApplicationController
     render json: product, status: 200
   end
 
+  def update
+    product = Product.find(params[:id])
+    product.update!(product_params)
+
+    render json: product.reload, status: 200
+  end
+
   def create
     product = Product.new(product_params)
 
@@ -20,6 +26,16 @@ class ProductsController < ApplicationController
       render json: product, status: 201
     else
       render json: 'Unprocessible entity', status: 422
+    end
+  end
+
+  def destroy
+    product = Product.find(params[:id])
+
+    if(product.destroy)
+      head :no_content
+    else
+      render json: 'Product not found!', status: 404
     end
   end
 
