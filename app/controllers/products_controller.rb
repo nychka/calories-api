@@ -21,8 +21,9 @@ class ProductsController < ApplicationController
 
   def create
     product = Product.new(product_params)
+    product.category_id = 1
 
-    if product.save
+    if product.save!
       render json: product, status: 201
     else
       render json: 'Unprocessible entity', status: 422
@@ -46,6 +47,6 @@ class ProductsController < ApplicationController
   end
 
   def product_params
-    params.permit(:image, :category_id, lang: params[:lang].keys, nutrition: params[:nutrition].keys)
+    params.permit(:image, lang: params[:lang].keys, nutrition: params[:nutrition].keys)
   end
 end

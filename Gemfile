@@ -6,7 +6,7 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
-gem 'rails', '~> 5.0.7'
+gem 'rails', '5.2.0'
 gem 'pg'
 gem 'puma', '~> 3.0'
 gem 'devise'
@@ -17,6 +17,7 @@ gem 'simple_token_authentication', '~> 1.0'
 gem 'active_model_serializers'
 gem 'rack-cors'
 gem 'kaminari'
+gem 'bootsnap'
 
 
 group :development, :test do

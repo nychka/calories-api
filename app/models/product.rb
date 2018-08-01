@@ -5,14 +5,14 @@ class Product < ApplicationRecord
   paginates_per 20
 
   default_scope { order(created_at: :desc) }
-  scope :max, ->(max) { limit(max) unless max.nil? }
+  scope :max_count, ->(max) { limit(max) unless max.nil? }
 
   class << self
     def filter(params)
       if params[:page].present?
         page(params[:page])
       else
-        max(params[:limit])
+        max_count(params[:limit])
       end
     end
   end
