@@ -17,6 +17,8 @@ gem 'simple_token_authentication', '~> 1.0'
 gem 'active_model_serializers'
 gem 'rack-cors'
 gem 'kaminari'
+gem 'bootsnap'
+gem 'faraday'
 
 
 group :development, :test do
