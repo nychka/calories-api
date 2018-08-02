@@ -2,8 +2,16 @@ class ProductsController < ApplicationController
 
   def index
     products = Product.filter(filter_params)
+    meta =  {
+        total: Product.count,
+        totalPages: Product.page(filter_params[:page]).total_pages,
+        perPage: Product.page(filter_params[:page]).limit_value,
+        currentPage: Product.page(filter_params[:page]).current_page,
+        nextPage: Product.page(filter_params[:page]).next_page,
+        prevPage: Product.page(filter_params[:page]).prev_page
+    }
 
-    render json: products, each_serializer: ProductSerializer, status: 200
+    render json: products, each_serializer: ProductSerializer, adapter: :json, meta: meta, status: 200
   end
 
   def show
