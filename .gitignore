@@ -21,4 +21,4 @@
 .byebug_history
 ./idea/*
 .idea/
-.env*
+.env*public/uploads/
