@@ -1,4 +1,5 @@
 class Product < ApplicationRecord
+  mount_uploader :image, ImageUploader
   store_accessor :lang
   store_accessor :nutrition
   belongs_to :category

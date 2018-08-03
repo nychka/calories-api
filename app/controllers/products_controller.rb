@@ -54,6 +54,6 @@ class ProductsController < ApplicationController
   end
 
   def product_params
-    params.permit(:image, :category_id, lang: params[:lang].keys, nutrition: params[:nutrition].keys)
+    params.permit(:image, :remote_image_url, :category_id, lang: params[:lang].keys, nutrition: params[:nutrition].keys)
   end
 end

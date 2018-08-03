@@ -19,6 +19,8 @@ gem 'rack-cors'
 gem 'kaminari'
 gem 'bootsnap'
 gem 'faraday'
+gem 'carrierwave', '~> 1.0'
+gem 'mini_magick'
 
 
 group :development, :test do
