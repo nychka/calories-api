@@ -1,11 +1,11 @@
-SimpleTokenAuthentication.configure do |config|
+#SimpleTokenAuthentication.configure do |config|
 
   # Configure the session persistence policy after a successful sign in,
   # in other words, if the authentication token acts as a signin token.
   # If true, user is stored in the session and the authentication token and
   # email may be provided only once.
   # If false, users must provide their authentication token and email at every request.
-  config.sign_in_token = false
+  #config.sign_in_token = false
 
   # Configure the name of the HTTP headers watched for authentication.
   #
@@ -62,4 +62,4 @@ SimpleTokenAuthentication.configure do |config|
   # then signing in through token authentication will be tracked as any other sign in.
   #
   # config.skip_devise_trackable = true
-end
+#end
