@@ -19,6 +19,7 @@ gem 'rack-cors'
 gem 'kaminari'
 gem 'bootsnap'
 gem 'faraday'
+gem 'devise-jwt', '~> 0.5.7'
 
 
 group :development, :test do
