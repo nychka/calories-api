@@ -4,6 +4,7 @@ class ProductsController < ApplicationController
     products = Product.filter(filter_params)
     meta =  {
         total: Product.count,
+        currentAmount: products.length,
         totalPages: Product.page(filter_params[:page]).total_pages,
         perPage: Product.page(filter_params[:page]).limit_value,
         currentPage: Product.page(filter_params[:page]).current_page,
