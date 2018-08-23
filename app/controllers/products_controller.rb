@@ -1,16 +1,23 @@
 class ProductsController < ApplicationController
 
   def index
-    products = Product.filter(filter_params)
+    products = Product.general.filter(filter_params)
     meta =  {
-        total: Product.count,
+        total: Product.general.count,
         currentAmount: products.length,
-        totalPages: Product.page(filter_params[:page]).total_pages,
-        perPage: Product.page(filter_params[:page]).limit_value,
-        currentPage: Product.page(filter_params[:page]).current_page,
-        nextPage: Product.page(filter_params[:page]).next_page,
-        prevPage: Product.page(filter_params[:page]).prev_page
+        totalPages: Product.general.page(filter_params[:page]).total_pages,
+        perPage: Product.general.page(filter_params[:page]).limit_value,
+        currentPage: Product.general.page(filter_params[:page]).current_page,
+        nextPage: Product.general.page(filter_params[:page]).next_page,
+        prevPage: Product.general.page(filter_params[:page]).prev_page
     }
+
+    render json: products, each_serializer: ProductSerializer, adapter: :json, meta: meta, status: 200
+  end
+
+  def my
+    products = Product.where(user_id: current_user.id)
+    meta = { total: products.length }
 
     render json: products, each_serializer: ProductSerializer, adapter: :json, meta: meta, status: 200
   end
@@ -29,13 +36,16 @@ class ProductsController < ApplicationController
   end
 
   def create
-    product = Product.new(product_params)
-
-    if product.save
-      render json: product, status: 201
-    else
-      render json: 'Unprocessible entity', status: 422
+    products = products_params.map do |product_hash|
+      product = Product.new(product_hash)
+      product.user_id = current_user.id
+      product.save!
+      product
     end
+
+    meta = { total: products.length }
+
+    render json: products, each_serializer: ProductSerializer, adapter: :json, meta: meta, status: 201
   end
 
   def destroy
@@ -54,7 +64,15 @@ class ProductsController < ApplicationController
     params.permit(:limit, :order, :page)
   end
 
+  def products_params
+    params.require(:products).map do |param|
+      param.permit(:image, :category_id, nutrition: param[:nutrition].keys,
+                   lang: param[:lang].keys, meta: param[:meta].keys)
+    end
+  end
+
   def product_params
-    params.permit(:image, :category_id, lang: params[:lang].keys, nutrition: params[:nutrition].keys)
+    params.permit(:image, :category_id, nutrition: param[:nutrition].keys,
+                     lang: param[:lang].keys, meta: param[:meta].keys)
   end
 end

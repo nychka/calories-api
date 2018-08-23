@@ -1,4 +1,5 @@
 class Product < ApplicationRecord
+  belongs_to :user
   store_accessor :lang
   store_accessor :nutrition
   belongs_to :category
@@ -6,6 +7,7 @@ class Product < ApplicationRecord
 
   default_scope { order(created_at: :desc) }
   scope :max_count, ->(max) { limit(max) unless max.nil? }
+  scope :general, -> { where(user_id: nil)}
 
   class << self
     def filter(params)
