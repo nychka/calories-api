@@ -5,4 +5,5 @@ class User < ApplicationRecord
          jwt_revocation_strategy: self
   include Devise::JWT::RevocationStrategies::JTIMatcher
   has_many :products
+  has_many :authentications, dependent: :delete_all
 end

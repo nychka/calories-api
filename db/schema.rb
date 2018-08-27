@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180823212350) do
+ActiveRecord::Schema.define(version: 20180826145703) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -35,6 +35,16 @@ ActiveRecord::Schema.define(version: 20180823212350) do
     t.string   "checksum",     null: false
     t.datetime "created_at",   null: false
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true, using: :btree
+  end
+
+  create_table "authentications", force: :cascade do |t|
+    t.string   "provider",     null: false
+    t.string   "access_token", null: false
+    t.string   "email",        null: false
+    t.integer  "user_id"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+    t.index ["provider", "email"], name: "index_authentications_on_provider_and_email", unique: true, using: :btree
   end
 
   create_table "categories", force: :cascade do |t|

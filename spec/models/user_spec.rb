@@ -1,5 +1,13 @@
 require 'rails_helper'
 
-RSpec.describe User, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+describe User do
+  it 'has at least one authentication' do
+    expect { FactoryBot.create(:user, with_auth: true ) }.to change(Authentication, :count).by(1)
+  end
+
+  it 'removes authentication after destroy' do
+    user = FactoryBot.create(:user, with_auth: true)
+
+    expect { user.destroy! }.to change(Authentication, :count).by(-1)
+  end
 end

@@ -20,6 +20,7 @@ gem 'kaminari'
 gem 'bootsnap'
 gem 'faraday'
 gem 'devise-jwt', '~> 0.5.7'
+gem 'oauth2'
 
 
 group :development, :test do
