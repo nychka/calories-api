@@ -49,12 +49,11 @@ class ProductsController < ApplicationController
   end
 
   def destroy
-    product = Product.find(params[:id])
-
-    if(product.destroy)
+    product = Product.find_by(id: params[:id], user_id: current_user.id)
+    if product&.destroy
       head :no_content
     else
-      render json: 'Product not found!', status: 404
+      render json: { error: 'Product not found' }, status: 404
     end
   end
 
