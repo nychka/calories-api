@@ -6,7 +6,7 @@ class SessionsController < Devise::SessionsController
       user = auth.user
     else
       user = User.find_or_create_by! email: email
-      user.authentications.create(email: email, provider: auth_params[:provider], access_token: access_token)
+      user.authentications.create(email: email, provider: auth_params[:provider], access_token: token)
     end
 
     self.resource = user
@@ -18,15 +18,15 @@ class SessionsController < Devise::SessionsController
   private
 
   def auth_params
-    params.permit(:access_token, :provider)
+    params.permit(:token, :provider, :grant_type)
   end
 
   def provider
     @provider ||= auth_params[:provider].camelize.constantize
   end
 
-  def access_token
-    auth_params[:access_token]
+  def token
+    auth_params[:token]
   end
 
   def email
@@ -34,7 +34,11 @@ class SessionsController < Devise::SessionsController
   end
 
   def user_info
-    @user_info ||= provider.get_info(access_token)
+    @user_info ||= provider.get_info(token, grant_type)
+  end
+
+  def grant_type
+    auth_params[:grant_type]
   end
 
   def respond_with(resource, _opts = {})

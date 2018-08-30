@@ -21,6 +21,7 @@ gem 'bootsnap'
 gem 'faraday'
 gem 'devise-jwt', '~> 0.5.7'
 gem 'oauth2'
+gem 'jwt'
 
 
 group :development, :test do
