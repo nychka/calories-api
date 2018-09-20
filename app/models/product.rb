@@ -1,8 +1,8 @@
 class Product < ApplicationRecord
-  belongs_to :user
+  belongs_to :user, required: false
   store_accessor :lang
   store_accessor :nutrition
-  belongs_to :category
+  belongs_to :category, required: false
   paginates_per 20
 
   default_scope { order(created_at: :desc) }
