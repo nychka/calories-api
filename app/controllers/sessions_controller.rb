@@ -5,7 +5,7 @@ class SessionsController < Devise::SessionsController
     if auth = Authentication.find_by(email: email, provider: auth_params[:provider])
       user = auth.user
     else
-      user = User.find_or_create_by! email: email
+      user = User.find_or_create_by! email: email, avatar: avatar
       user.authentications.create(email: email, provider: auth_params[:provider], access_token: token)
     end
 
@@ -29,8 +29,12 @@ class SessionsController < Devise::SessionsController
     auth_params[:token]
   end
 
+  def avatar
+    user_info[:avatar]
+  end
+
   def email
-    @email ||= user_info['email']
+    @email ||= user_info[:email]
   end
 
   def user_info
