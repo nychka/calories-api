@@ -1,6 +1,6 @@
 module Google
-  client_id = ENV.fetch('CALORIES_CLIENT_ID', '663214673431-blms3oaqn933l3iu6316tbca76hcge9e.apps.googleusercontent.com') #'930732790033-lirk2bn8esigr142rucgm86gqsifeum7.apps.googleusercontent.com')
-  client_secret = ENV.fetch('CALORIES_CLIENT_SECRET', 'hkUYXyvy7jQJDMqNiEMo7wYN') #'rQ_nmAjb6Vh7bUGLchlD2S4p')
+  client_id = ENV.fetch('CALORIES_CLIENT_ID', '930732790033-lirk2bn8esigr142rucgm86gqsifeum7.apps.googleusercontent.com')
+  client_secret = ENV.fetch('CALORIES_CLIENT_SECRET', 'rQ_nmAjb6Vh7bUGLchlD2S4p')
   site = 'https://www.googleapis.com'
 
   @@client = OAuth2::Client.new(client_id, client_secret, site: site)
@@ -19,7 +19,14 @@ module Google
       redirect_uri='http://localhost:3000/callback'
       token = OAuth2::AccessToken.new(@@client, access_token, redirect_uri: redirect_uri)
       response = token.get('userinfo/v2/me')
-      JSON.parse(response.body)
+      structurize JSON.parse(response.body)
+    end
+
+    def structurize(data)
+      {
+          email: data['email'],
+          avatar: data['picture']
+      }
     end
   end
 end
