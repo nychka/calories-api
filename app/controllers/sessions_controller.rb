@@ -5,8 +5,9 @@ class SessionsController < Devise::SessionsController
     if auth = Authentication.find_by(email: email, provider: auth_params[:provider])
       user = auth.user
     else
-      user = User.find_or_create_by! email: email, avatar: avatar
+      user = User.find_or_create_by! email: email
       user.authentications.create(email: email, provider: auth_params[:provider], access_token: token)
+      user.update(avatar: avatar)
     end
 
     self.resource = user
