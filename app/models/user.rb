@@ -6,4 +6,5 @@ class User < ApplicationRecord
   include Devise::JWT::RevocationStrategies::JTIMatcher
   has_many :products
   has_many :authentications, dependent: :delete_all
+  has_many :meals, dependent: :delete_all
 end

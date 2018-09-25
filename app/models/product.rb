@@ -4,6 +4,7 @@ class Product < ApplicationRecord
   store_accessor :nutrition
   belongs_to :category, required: false
   paginates_per 20
+  has_many :meals
 
   default_scope { order(created_at: :desc) }
   scope :max_count, ->(max) { limit(max) unless max.nil? }
