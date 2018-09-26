@@ -63,4 +63,20 @@ RSpec.describe "Meals", type: :request do
       expect(unix_timestamps(json['meals'])).to match_array(@meals.pluck(:created_at))
     end
   end
+
+  context "DELETE /meals" do
+    before(:each) do
+      @ids = FactoryBot.create_list(:meal, 5, user_id: user.id).pluck(:id)
+    end
+    it "returns status 204" do
+      sign_in user
+      expect { delete '/meals', params: { ids: @ids }}.to change{ Meal.count }.by(-5)
+    end
+
+    it "returns status 401" do
+      delete '/meals', params: { ids: @ids }
+
+      expect(response.status).to be(401)
+    end
+  end
 end

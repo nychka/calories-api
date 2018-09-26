@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
-  resources :meals
+  resources :meals, except: [:destroy]
+  delete '/meals', to: 'meals#destroy'
   devise_for :users, controllers: {sessions: 'sessions'}
   get 'translates/translate'
   get 'image_search/search'

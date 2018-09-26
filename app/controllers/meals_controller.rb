@@ -13,6 +13,12 @@ class MealsController < ApplicationController
     render json: meals, each_serializer: MealSerializer, adapter: :json, status: :created
   end
 
+  def destroy
+    Meal.where(user_id: current_user.id, id: meals_ids).delete_all
+
+    head :no_content
+  end
+
   private
 
   def create_by(hash)
@@ -21,6 +27,10 @@ class MealsController < ApplicationController
     meal.user_id = current_user.id
     meal.save!
     meal
+  end
+
+  def meals_ids
+    params.require(:ids)
   end
 
   def meals_params
