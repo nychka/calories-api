@@ -23,6 +23,14 @@ module RequestSpecHelper
     collection.map {|k| k['id'] }
   end
 
+  def response_ids(name)
+    collect_ids(json[name.to_s])
+  end
+
+  def unix_timestamps(collection)
+    collection.map{|record| DateTime.parse(record['created_at']).to_i }
+  end
+
   private
 
   def warden_scope(resource)

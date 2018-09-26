@@ -1,51 +1,31 @@
 class MealsController < ApplicationController
-  before_action :set_meal, only: [:show, :update, :destroy]
+  before_action :authenticate_user!
 
-  # GET /meals
   def index
-    @meals = Meal.all
+    @meals = Meal.where(user_id: current_user.id)
 
-    render json: @meals
+    render json: @meals, each_serializer: MealSerializer, adapter: :json
   end
 
-  # GET /meals/1
-  def show
-    render json: @meal
-  end
-
-  # POST /meals
   def create
-    @meal = Meal.new(meal_params)
+    meals = meals_params.map { |hash| create_by(hash) }
 
-    if @meal.save
-      render json: @meal, status: :created, location: @meal
-    else
-      render json: @meal.errors, status: :unprocessable_entity
-    end
-  end
-
-  # PATCH/PUT /meals/1
-  def update
-    if @meal.update(meal_params)
-      render json: @meal
-    else
-      render json: @meal.errors, status: :unprocessable_entity
-    end
-  end
-
-  # DELETE /meals/1
-  def destroy
-    @meal.destroy
+    render json: meals, each_serializer: MealSerializer, adapter: :json, status: :created
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_meal
-      @meal = Meal.find(params[:id])
-    end
 
-    # Only allow a trusted parameter "white list" through.
-    def meal_params
-      params.require(:meal).permit(:product_id, :user_id, :weight)
+  def create_by(hash)
+    meal = Meal.new(hash)
+    meal.to_datetime = hash[:created_at]
+    meal.user_id = current_user.id
+    meal.save!
+    meal
+  end
+
+  def meals_params
+    params.require(:meals).map do |param|
+      param.permit(:product_id, :user_id, :weight, :created_at)
     end
+  end
 end
