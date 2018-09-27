@@ -25,25 +25,42 @@ describe 'Products' do
     end
   end
 
-  # describe 'DELETE /products/:id' do
-  #   context 'user' do
-  #     it 'deletes own product' do
-  #       sign_in @user = FactoryBot.create(:user)
-  #       product = FactoryBot.create(:product, user: @user)
-  #
-  #       delete "/products/#{product.id}"
-  #
-  #       expect(response.status).to be(204)
-  #     end
-  #
-  #     it 'deletes other product' do
-  #       sign_in @user = FactoryBot.create(:user)
-  #       product = FactoryBot.create(:product, user: FactoryBot.create(:user))
-  #
-  #       delete "/products/#{product.id}"
-  #
-  #       expect(response.status).to be(404)
-  #     end
-  #   end
-  # end
+  context 'POST /products' do
+    before(:each) do
+      @products = [
+          { lang: { en: 'foo'}, nutrition: { calories: 111 }},
+          { lang: { en: 'bar'}, nutrition: { calories: 222 }},
+          { lang: { en: 'xyz'}, nutrition: { calories: 333 }}
+      ]
+    end
+
+    it 'returns status 201' do
+      sign_in user
+
+      expect{ post '/products', params: { products: @products }}.to change{ Product.count }.by(3)
+      expect(json['products'].length).to eq(3)
+    end
+
+    it 'returns status 401' do
+      post '/products', params: { products: @products }
+
+      expect(response.status).to be(401)
+    end
+  end
+
+  context "DELETE /products" do
+    before(:each) do
+      @ids = FactoryBot.create_list(:product, 3, user_id: user.id).pluck(:id)
+    end
+    it "returns status 204" do
+      sign_in user
+      expect { delete '/products', params: { ids: @ids }}.to change{ Product.count }.by(-3)
+    end
+
+    it "returns status 401" do
+      delete '/products', params: { ids: @ids }
+
+      expect(response.status).to be(401)
+    end
+  end
 end
