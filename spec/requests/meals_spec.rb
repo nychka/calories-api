@@ -66,6 +66,7 @@ RSpec.describe "Meals", type: :request do
 
   context "DELETE /meals" do
     before(:each) do
+      FactoryBot.create_list(:meal, 3)
       @ids = FactoryBot.create_list(:meal, 5, user_id: user.id).pluck(:id)
     end
     it "returns status 204" do
