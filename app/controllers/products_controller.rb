@@ -1,38 +1,14 @@
 class ProductsController < ApplicationController
+  before_action :authenticate_user!, except: [:index]
 
   def index
-    products = Product.general.filter(filter_params)
-    meta =  {
-        total: Product.general.count,
-        currentAmount: products.length,
-        totalPages: Product.general.page(filter_params[:page]).total_pages,
-        perPage: Product.general.page(filter_params[:page]).limit_value,
-        currentPage: Product.general.page(filter_params[:page]).current_page,
-        nextPage: Product.general.page(filter_params[:page]).next_page,
-        prevPage: Product.general.page(filter_params[:page]).prev_page
-    }
+    if user_signed_in?
+      products = Product.general.or(Product.where(user_id: current_user.id))
+    else
+      products = Product.general
+    end
 
-    render json: products, each_serializer: ProductSerializer, adapter: :json, meta: meta, status: 200
-  end
-
-  def my
-    products = Product.where(user_id: current_user.id)
-    meta = { total: products.length }
-
-    render json: products, each_serializer: ProductSerializer, adapter: :json, meta: meta, status: 200
-  end
-
-  def show
-    product = Product.find(params[:id])
-
-    render json: product, status: 200
-  end
-
-  def update
-    product = Product.find(params[:id])
-    product.update!(product_params)
-
-    render json: product.reload, status: 200
+    render json: products, each_serializer: ProductSerializer, adapter: :json, status: 200
   end
 
   def create
@@ -43,18 +19,13 @@ class ProductsController < ApplicationController
       product
     end
 
-    meta = { total: products.length }
-
-    render json: products, each_serializer: ProductSerializer, adapter: :json, meta: meta, status: 201
+    render json: products, each_serializer: ProductSerializer, adapter: :json, status: 201
   end
 
   def destroy
-    product = Product.find_by(id: params[:id], user_id: current_user.id)
-    if product&.destroy
-      head :no_content
-    else
-      render json: { error: 'Product not found' }, status: 404
-    end
+    Product.where(user_id: current_user.id, id: products_ids).delete_all
+
+    head :no_content
   end
 
   private
@@ -66,12 +37,11 @@ class ProductsController < ApplicationController
   def products_params
     params.require(:products).map do |param|
       param.permit(:image, :category_id, nutrition: param[:nutrition].keys,
-                   lang: param[:lang].keys, meta: param[:meta].keys)
+                   lang: param[:lang].keys)
     end
   end
 
-  def product_params
-    params.permit(:image, :category_id, nutrition: param[:nutrition].keys,
-                     lang: param[:lang].keys, meta: param[:meta].keys)
+  def products_ids
+    params.require(:ids)
   end
 end
