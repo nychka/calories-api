@@ -1,3 +1,7 @@
 class MealSerializer < ActiveModel::Serializer
-  attributes :id, :product_id, :user_id, :weight, :created_at
+  attributes :id, :product_id, :weight, :created_at
+
+  def created_at
+    object.created_at.to_i
+  end
 end
